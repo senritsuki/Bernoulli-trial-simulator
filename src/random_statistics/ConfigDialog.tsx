@@ -6,12 +6,14 @@ import { TextField } from 'office-ui-fabric-react/lib/TextField';
 export interface Model {
     probability: number;
     people: number;
+    goal: number;
     seed: number;
 }
 
 export interface Props {
     probability: number;
     people: number;
+    goal: number;
     seed: number;
     onApply: (model: Model) => void;
 }
@@ -20,16 +22,18 @@ export interface State {
     hideDialog: boolean;
     probability: number;
     people: number;
+    goal: number;
     seed: number;
 }
 
-export class ConfigDialog extends React.Component<Props, State> {
+export class ConfigDialogButton extends React.Component<Props, State> {
     constructor(props: Props) {
         super(props);
         this.state = {
             hideDialog: true,
             probability: props.probability,
             people: props.people,
+            goal: props.goal,
             seed: props.seed,
         };
     }
@@ -37,30 +41,33 @@ export class ConfigDialog extends React.Component<Props, State> {
     render() {
         return (
             <div>
-                <DefaultButton text="config" onClick={() => this.openDialog()} />
+                <DefaultButton text="条件変更" onClick={() => this.openDialog()} />
                 <Dialog
                     hidden={this.state.hideDialog}
                     onDismiss={() => this.closeDialog()}
                     dialogContentProps={{
                         type: DialogType.largeHeader,
-                        title: 'Config',
-                        subText: 'Select probability, people'
+                        title: '条件変更',
+                        subText: '成功率は0以上1以下の小数を、人数は1以上、目標は1以上、seedは0以外の整数を入力ください。人数を増やすほど重くなります。'
                     }}
                 >
                     <div className="ms-Grid">
-                        {dialogRaw('probability', this.props.probability, 
-                            s => this.setState({'probability': +s}), 
-                            () => '' + this.state.probability)}
-                        {dialogRaw('people', this.props.people, 
-                            s => this.setState({'people': +s}), 
-                            () => '' + this.state.people)}
-                        {dialogRaw('seed',  this.props.seed, 
-                            s => this.setState({'seed': isNaN(+s) ? NaN : +s >>> 0}), 
+                        {rowTextField('成功率', this.props.probability, 
+                            s => this.setState({probability: +s}), 
+                            () => '' + (this.state.probability * 100).toFixed(3) + '%')}
+                        {rowTextField('挑戦人数', this.props.people, 
+                            s => this.setState({people: +s}), 
+                            () => '' + this.state.people + '人')}
+                        {rowTextField('目標', this.props.goal, 
+                            s => this.setState({goal: +s}), 
+                            () => '' + this.state.goal + '回成功')}
+                        {rowTextField('seed',  this.props.seed, 
+                            s => this.setState({seed: isNaN(+s) ? NaN : +s >>> 0}), 
                             () => '' + this.state.seed)}
                     </div>
                     <DialogFooter>
-                        <PrimaryButton onClick={() => this.closeDialogAndUpdate()} text="Update" />
-                        <DefaultButton onClick={() => this.closeDialog()} text="Cancel" />
+                        <PrimaryButton onClick={() => this.closeDialogAndUpdate()} text="更新" />
+                        <DefaultButton onClick={() => this.closeDialog()} text="キャンセル" />
                     </DialogFooter>
                 </Dialog>
             </div>
@@ -79,7 +86,7 @@ export class ConfigDialog extends React.Component<Props, State> {
     }
 }
 
-function dialogRaw(label: string, defValue: number, onChanged: (s: string) => void, show: () => string): JSX.Element {
+function rowTextField(label: string, defValue: number, onChanged: (s: string) => void, show: () => string): JSX.Element {
     return (
         <div className="ms-Grid-row">
             <div className="ms-Grid-col ms-lg6">

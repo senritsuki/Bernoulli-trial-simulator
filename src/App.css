@@ -9,7 +9,7 @@
 
 .App-header {
   background-color: #222;
-  height: 150px;
+  /*height: 150px;*/
   padding: 20px;
   color: white;
 }
@@ -27,8 +27,43 @@
   to { transform: rotate(360deg); }
 }
 
+h2, h3, h4 {
+  font-weight: normal;
+  text-align: center;
+}
+h2 b, h3 b {
+  color: #707788;
+  font-size: 200%;
+  font-weight: normal;
+}
+h4 b {
+  color: #707788;
+  font-size: 125%;
+  font-weight: normal;
+}
+h3, h4 {
+  margin: 0.5em 0;
+}
+h3 b.blue {
+  color: #13b9fd; /* 70,50,245 */
+}
+h3 b.green {
+  color: #88b95c; /* 70,50,125 */
+}
+h3 b.red {
+  color: #fe84a6; /* 70,50,5 */
+}
+
 .progress {
   margin: 1px 0;
-  padding: 1px 10px;
-  border: 1px solid #eee;
+  padding: 0;
+  border: 1px solid rgb(234, 234, 234);
+}
+.progress p {
+  font-size: 85%;
+}
+.progress b {
+  color: #707788;
+  font-size: 120%;
+  font-weight: normal;
 }

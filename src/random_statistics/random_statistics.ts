@@ -67,9 +67,16 @@ function merge(results: IF[]): number[] {
     return count_people;
 }
 
-export function countTotal(count_people: number[]): number {
+export function sumTotal(count_people: number[]): number {
     const total = count_people
         .map((n, i) => n * i)
+        .reduce((a, b) => a + b);
+    return total;
+}
+
+export function countIfLessThan(count_people: number[], lessThan: number): number {
+    const total = count_people
+        .map((n, i) => i < lessThan ? n : 0)
         .reduce((a, b) => a + b);
     return total;
 }
