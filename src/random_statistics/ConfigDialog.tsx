@@ -48,21 +48,25 @@ export class ConfigDialogButton extends React.Component<Props, State> {
                     dialogContentProps={{
                         type: DialogType.largeHeader,
                         title: '条件変更',
-                        subText: '成功率は0以上1以下の小数を、人数は1以上、目標は1以上、seedは0以外の整数を入力ください。人数を増やすほど重くなります。'
+                        subText: '人数を増やすほど処理が重くなります。'
                     }}
                 >
                     <div className="ms-Grid">
                         {rowTextField('成功率', this.props.probability, 
                             s => this.setState({probability: +s}), 
+                            '0.0～1.0の小数',
                             () => '' + (this.state.probability * 100).toFixed(3) + '%')}
                         {rowTextField('挑戦人数', this.props.people, 
                             s => this.setState({people: +s}), 
+                            '1以上の整数',
                             () => '' + this.state.people + '人')}
                         {rowTextField('目標', this.props.goal, 
                             s => this.setState({goal: +s}), 
+                            '1以上の整数',
                             () => '' + this.state.goal + '回成功')}
                         {rowTextField('seed',  this.props.seed, 
                             s => this.setState({seed: isNaN(+s) ? NaN : +s >>> 0}), 
+                            '0以外の整数',
                             () => '' + this.state.seed)}
                     </div>
                     <DialogFooter>
@@ -86,7 +90,7 @@ export class ConfigDialogButton extends React.Component<Props, State> {
     }
 }
 
-function rowTextField(label: string, defValue: number, onChanged: (s: string) => void, show: () => string): JSX.Element {
+function rowTextField(label: string, defValue: number, onChanged: (s: string) => void, comment: string, show: () => string): JSX.Element {
     return (
         <div className="ms-Grid-row">
             <div className="ms-Grid-col ms-lg6">
@@ -96,8 +100,9 @@ function rowTextField(label: string, defValue: number, onChanged: (s: string) =>
                     onChanged={s => onChanged(s)}
                 />
             </div>
-            <div className="ms-Grid-col ms-lg6">
-                <p>{show()}</p>
+            <div className="ms-Grid-col ms-lg6" style={{'fontSize': '90%'}}>
+                <p>{comment}</p>
+                <p>→ {show()}</p>
             </div>
         </div>
     );

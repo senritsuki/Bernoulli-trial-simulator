@@ -25,7 +25,7 @@ class App extends React.Component<{}, State> {
   constructor(props: {}) {
     super(props);
     const probability = 0.007;
-    const people = 200;
+    const people = 10000;
     const goal = 1;
     const seed = Math.floor(Math.random() * 0xffffffff);
     this.random = new rs.XORShift(seed);
